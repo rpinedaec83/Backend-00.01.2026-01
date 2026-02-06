@@ -99,20 +99,107 @@ let bandera = true;
 let inicio = 190;
 
 while (bandera) {
-   console.log(`Este es el numero actual: ${inicio}`);
-   inicio++;
-   if(inicio===200){
+    console.log(`Este es el numero actual: ${inicio}`);
+    inicio++;
+    if (inicio === 200) {
         bandera = false;
-   } 
+    }
 }
 
-inicio  = 0
+inicio = 0
 bandera = true;
 
 do {
-   console.log(`Este es el numero actual: ${inicio}`);
-   inicio++;
-   if(inicio===200){
+    console.log(`Este es el numero actual: ${inicio}`);
+    inicio++;
+    if (inicio === 200) {
         bandera = false;
-   } 
+    }
 } while (bandera);
+
+
+
+document.getElementById("btnInicio").addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("Hizo click");
+
+    let edad = prompt("Escribe tu edad")
+    // alert(edad);
+    Swal.fire({
+        title: "Respuesta",
+        text: edad,
+        icon: "success"
+    });
+});
+
+
+
+function ejercicio01() {
+
+    console.log("Inicio del ejercicio 01");
+    let strNumero = prompt("Ingresa tu numero");
+
+    let numero = Number.parseInt(strNumero);
+
+    if (Number.isNaN(numero)) {
+        Swal.fire({
+            title: "Respuesta",
+            text: "Debes digitar numeros no palabras",
+            icon: "error"
+        });
+    } else {
+        if (numero > 99 && numero < 1000) {
+            Swal.fire({
+                title: "Respuesta",
+                text: "Si tiene 3 digitos",
+                icon: "success"
+            });
+        }
+        else {
+            Swal.fire({
+                title: "Respuesta",
+                text: "No tiene 3 digitos",
+                icon: "error"
+            });
+        }
+    }
+    console.log(typeof (numero))
+    console.log(numero)
+
+    console.log("Fin del ejercicio 01");
+}
+
+function ejercicio02(){
+    console.log("Inicio del ejercicio 02");
+
+let strNumero = prompt("Ingresa tu numero");
+
+    let numero = Number.parseInt(strNumero);
+
+    if (Number.isNaN(numero)) {
+        Swal.fire({
+            title: "Respuesta",
+            text: "Debes digitar numeros no palabras",
+            icon: "error"
+        });
+    } else {
+        if (numero < 0 ) {
+            Swal.fire({
+                title: "Respuesta",
+                text: "El numero es negativo",
+                icon: "success"
+            });
+        }
+        else {
+            Swal.fire({
+                title: "Respuesta",
+                text: "El numero es positivo",
+                icon: "success"
+            });
+        }
+    }
+    console.log(typeof (numero))
+    console.log(numero)
+
+    console.log("Fin del ejercicio 02")
+}
