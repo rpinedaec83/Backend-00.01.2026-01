@@ -19,7 +19,7 @@ find path -name "nombre de archivo"
 ## File and folder operations commands
 
 ```bash
-mkdir 
+mkdir    
 rmdir
 
 touch nombreArchivo.extension
@@ -35,11 +35,12 @@ sudo su
 
 ```
 
+
 ## System monitoring and processes commands
 
 ```bash
 df -h
-top 
+top    
 ps
 uname
 hostname

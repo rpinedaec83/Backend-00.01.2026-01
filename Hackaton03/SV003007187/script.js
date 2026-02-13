@@ -685,10 +685,6 @@ console.log("Kilogramos: " + kilogramos + " kg");
              }
 
 
-
-
-
-
 function Ejercicio17() {
     let horaInput = prompt("Ingrese la hora (HH:MM:SS):"); 
     let [horas, minutos, segundos] = horaInput.split(":").map(Number); // use split aqui para separar las horas, minutos y segundos
@@ -769,4 +765,328 @@ function Ejercicio18() {
 
  
 iniciarVenta();
+}
+
+function Ejercicio19() {
+
+    console.log("Programa para calcular el salario semanal de empleados de una heladería");
+
+ 
+const calcularSalario = () => {
+   
+    let idEmpleado = parseInt(prompt("Ingrese el número identificador del empleado:"));
+    
+   
+    let diasTrabajados = parseInt(prompt("Ingrese la cantidad de días trabajados en la semana (máximo 6):"));
+    
+    
+    if (diasTrabajados > 6) {
+        console.log("Error: La cantidad máxima de días laborales es 6.");
+        return;
+    }
+    
+    if (diasTrabajados < 0) {
+        console.log("Error: Los días trabajados no pueden ser negativos.");
+        return;
+    }
+    
+    
+    let salarioDiario;
+    let tipoEmpleado;
+    
+
+    switch(idEmpleado) {
+        case 1:
+            tipoEmpleado = "Cajero";
+            salarioDiario = 56;
+            break;
+        case 2:
+            tipoEmpleado = "Servidor";
+            salarioDiario = 64;
+            break;
+        case 3:
+            tipoEmpleado = "Preparador de mezclas";
+            salarioDiario = 80;
+            break;
+        case 4:
+            tipoEmpleado = "Mantenimiento";
+            salarioDiario = 48;
+            break;
+        default:
+            console.log("Error: Identificador de empleado no válido. Debe ser 1, 2, 3 o 4.");
+            return;
+    }
+    
+    // Calcular el salario total
+    let salarioTotal = salarioDiario * diasTrabajados;
+    
+    
+    console.log("=== RESULTADO ===");
+    console.log("Tipo de empleado: " + tipoEmpleado);
+    console.log("ID: " + idEmpleado);
+    console.log("Salario diario: $" + salarioDiario);
+    console.log("Días trabajados: " + diasTrabajados);
+    console.log("Salario total a pagar: $" + salarioTotal);
+}
+ }
+
+calcularSalario();
+
+
+
+
+function Ejercicio20() {
+    console.log("Programa para procesar 4 números enteros positivos");
+
+
+function procesarNumeros() {
+  
+    let num1 = parseInt(prompt("Ingrese el primer número entero positivo:"));
+    let num2 = parseInt(prompt("Ingrese el segundo número entero positivo:"));
+    let num3 = parseInt(prompt("Ingrese el tercer número entero positivo:"));
+    let num4 = parseInt(prompt("Ingrese el cuarto número entero positivo:"));
+    
+   
+    if (num1 <= 0 || num2 <= 0 || num3 <= 0 || num4 <= 0) {
+        console.log("Error: Todos los números deben ser enteros positivos.");
+        return;
+    }
+    
+   
+    let contadorPares = 0;
+    /// determine cual es el mayor de todos
+    if (num1 % 2 === 0) contadorPares++;
+    if (num2 % 2 === 0) contadorPares++;
+    if (num3 % 2 === 0) contadorPares++;
+    if (num4 % 2 === 0) contadorPares++;
+    
+    console.log("1. Cantidad de números pares: " + contadorPares);
+    
+   
+    let mayor = num1;
+    
+    if (num2 > mayor) mayor = num2;
+    if (num3 > mayor) mayor = num3;
+    if (num4 > mayor) mayor = num4;
+    
+    console.log("2. El número mayor es: " + mayor);
+  
+    if (num3 % 2 === 0) {
+        let cuadradoSegundo = num2 * num2;
+        console.log("3. El tercer número es par, el cuadrado del segundo es: " + cuadradoSegundo);
+    } else {
+        console.log("3. El tercer número no es par, no se calcula el cuadrado del segundo.");
+    }
+    
+   
+    if (num1 < num4) {
+        let media = (num1 + num2 + num3 + num4) / 4;
+        console.log("4. El primero es menor que el cuarto, la media es: " + media);
+    } else {
+        console.log("4. El primero no es menor que el cuarto, no se calcula la media.");
+    }
+    
+ 
+    if (num2 > num3) {
+        if (num3 >= 50 && num3 <= 700) {
+            // Si cumple, calcular la suma de los 4 números
+            let suma = num1 + num2 + num3 + num4;
+            console.log("5. El segundo es mayor que el tercero y el tercero está entre 50 y 700.");
+            console.log("   La suma de los 4 números es: " + suma);
+        } else {
+            console.log("5. El segundo es mayor que el tercero, pero el tercero NO está entre 50 y 700.");
+            console.log("   No se calcula la suma de los 4 números.");
+        }
+    } else {
+        console.log("5. El segundo NO es mayor que el tercero, no se verifica el rango del tercero.");
+    }
+}
+}
+
+
+procesarNumeros();
+
+function Ejercicio21() { //// ingresar estte ejercicio al index  
+    console.log("Ejercicio 21: Calcular factorial de un número");
+    let n = parseInt(prompt("Ingrese un número para calcular su factorial:"));
+    if (n < 0) {
+        console.log("Error: El número debe ser positivo.");
+        return;
+    }
+    function factorial(n) {
+        if (n === 0 || n === 1) return 1; // Caso base [3, 6]
+        return n * factorial(n - 1); // Llamada recursiva [1]
+       
+    }
+    console.log("El factorial de " + n + " es: " + factorial(n));
+}
+
+function ejercicio21() {
+    let numero = parseInt(prompt("Ingrese un número para calcular su factorial:"));
+    if (isNaN(numero)) {
+        Swal.fire({ title: "Error", text: "Ingrese un número válido", icon: "error" });
+        return;
+    }
+    let res = 1;
+    for (let i = 1; i <= numero; i++) res *= i;
+    console.log(`Factorial: ${res}`);
+    Swal.fire({ title: "Resultado", text: `El factorial de ${numero} es ${res}`, icon: "success" });
+}
+
+function ejercicio22() {
+    let n = parseInt(prompt("Sumar los primeros 'n' números. Ingrese n:"));
+    if (isNaN(n)) return Swal.fire({ title: "Error", text: "Dato inválido", icon: "error" });
+    let suma = (n * (n + 1)) / 2;
+    console.log(`Suma total: ${suma}`);
+    Swal.fire({ title: "Respuesta", text: `La suma de los primeros ${n} números es: ${suma}`, icon: "success" });
+}
+
+function ejercicio23() {
+    let n = parseInt(prompt("Sumar impares hasta n. Ingrese n:"));
+    let suma = 0;
+    for (let i = 1; i <= n; i++) { if (i % 2 !== 0) suma += i; }
+    Swal.fire({ title: "Resultado", text: `La suma de impares hasta ${n} es ${suma}`, icon: "success" });
+}
+
+function ejercicio24() {
+    let suma = 0;
+    for (let i = 2; i <= 1000; i += 2) suma += i;
+    console.log("Suma pares hasta 1000: " + suma);
+    Swal.fire({ title: "Finalizado", text: `La suma de pares hasta 1000 es ${suma}`, icon: "success" });
+}
+
+function ejercicio25() {
+    // Otra forma: Usando ciclo While
+    let n = parseInt(prompt("Factorial (método 2). Ingrese número:"));
+    let res = 1, i = n;
+    while (i > 1) { res *= i; i--; }
+    Swal.fire({ title: "Factorial", text: `Resultado: ${res}`, icon: "success" });
+}
+
+function ejercicio26() {
+    let a = parseInt(prompt("Dividendo:"));
+    let b = parseInt(prompt("Divisor:"));
+    let cociente = 0, resto = a;
+    while (resto >= b) { resto -= b; cociente++; }
+    Swal.fire({ title: "Resultado", text: `Cociente: ${cociente}, Resto: ${resto}`, icon: "info" });
+}
+
+function ejercicio27() {
+    let suma = 0, cont = 0, num;
+    do {
+        num = parseInt(prompt("Ingrese número positivo (negativo para terminar):"));
+        if (num >= 0) { suma += num; cont++; }
+    } while (num >= 0);
+    let media = cont > 0 ? suma / cont : 0;
+    Swal.fire({ title: "Media", text: `La media es: ${media}`, icon: "success" });
+}
+
+function ejercicio28() {
+    let suma = 0, i = 1;
+    do { suma += i; i++; } while (i <= 100);
+    Swal.fire({ title: "Ciclo Repetir", text: `Suma de los 100 primeros: ${suma}`, icon: "success" });
+}
+
+function ejercicio29() {
+    let suma = 0, i = 1;
+    while (i <= 100) { suma += i; i++; }
+    Swal.fire({ title: "Ciclo Mientras", text: `Suma de los 100 primeros: ${suma}`, icon: "success" });
+}
+
+function ejercicio30() {
+    let suma = 0;
+    for (let i = 1; i <= 100; i++) suma += i;
+    Swal.fire({ title: "Ciclo Para", text: `Suma de los 100 primeros: ${suma}`, icon: "success" });
+}
+
+function ejercicio31() {
+    let sP = 0, cP = 0, sI = 0, cI = 0;
+    for (let i = 1; i <= 10; i++) {
+        let n = parseInt(prompt(`Número ${i} de 10:`));
+        if (n % 2 === 0) { sP += n; cP++; } else { sI += n; cI++; }
+    }
+    Swal.fire({ title: "Medias", text: `Media Pares: ${sP/cP || 0}, Media Impares: ${sI/cI || 0}`, icon: "info" });
+}
+
+function ejercicio32() {
+    // Ejemplo simplificado para 3 ciudades
+    let ciudadMayor = "", maxPob = 0;
+    for (let i = 1; i <= 3; i++) {
+        let nombre = prompt(`Nombre ciudad ${i}:`);
+        let pob = parseInt(prompt(`Población de ${nombre}:`));
+        if (pob > maxPob) { maxPob = pob; ciudadMayor = nombre; }
+    }
+    Swal.fire({ title: "Ciudad más poblada", text: `${ciudadMayor} con ${maxPob} personas`, icon: "success" });
+}
+
+function ejercicio33() {
+    let r = prompt("¿Desea continuar con el programa? (si/no)");
+    if (r.toLowerCase() === "si") {
+        Swal.fire({ title: "Continuar", text: "Has decidido continuar", icon: "success" });
+    } else {
+        Swal.fire({ title: "Fin", text: "Programa finalizado", icon: "warning" });
+    }
+}
+
+function ejercicio34() {
+    let n = parseInt(prompt("¿Tabla de qué número (1-9)?"));
+    let tabla = "";
+    for (let i = 1; i <= 10; i++) tabla += `${n} x ${i} = ${n*i}\n`;
+    alert(tabla); // El alert es más sencillo para listas largas
+    Swal.fire({ title: `Tabla del ${n}`, text: "Generada con éxito", icon: "success" });
+}
+
+function ejercicio35() {
+    let mayor = -Infinity, menor = Infinity;
+    for (let i = 1; i <= 20; i++) {
+        let n = parseInt(prompt(`Ingrese número ${i} de 20:`));
+        if (n > mayor) mayor = n;
+        if (n < menor) menor = n;
+    }
+    Swal.fire({ title: "Resultados", text: `Mayor: ${mayor}, Menor: ${menor}`, icon: "info" });
+}
+
+function ejercicio36() {
+    let n = parseInt(prompt("¿Cuántos números de Fibonacci?"));
+    let a = 0, b = 1, temp;
+    for (let i = 0; i < n; i++) {
+        console.log(a);
+        temp = a + b; a = b; b = temp;
+    }
+    Swal.fire({ title: "Fibonacci", text: "Serie generada en consola", icon: "success" });
+}
+
+function ejercicio37() {
+    let a = parseInt(prompt("Número A:"));
+    let b = parseInt(prompt("Número B:"));
+    while (b !== 0) { let t = b; b = a % b; a = t; }
+    Swal.fire({ title: "M.C.D", text: `El M.C.D es: ${a}`, icon: "success" });
+}
+
+function ejercicio38() {
+    let n = parseInt(prompt("Verificar si es número perfecto:"));
+    let suma = 0;
+    for (let i = 1; i < n; i++) { if (n % i === 0) suma += i; }
+    let esP = (suma === n);
+    Swal.fire({ title: "Resultado", text: esP ? "Es perfecto" : "No es perfecto", icon: esP ? "success" : "error" });
+}
+
+function ejercicio39() {
+    let it = parseInt(prompt("Iteraciones para Pi (Gregory-Leibniz):"));
+    let pi = 0, div = 1;
+    for (let i = 0; i < it; i++) {
+        if (i % 2 === 0) pi += 4 / div; else pi -= 4 / div;
+        div += 2;
+    }
+    Swal.fire({ title: "Aproximación Pi", text: `Resultado: ${pi}`, icon: "info" });
+}
+
+function ejercicio40() {
+    let it = parseInt(prompt("Iteraciones para Pi:"));
+    let pi = 3, s = 1;
+    for (let i = 2; i <= it * 2; i += 2) {
+        pi += s * (4 / (i * (i + 1) * (i + 2)));
+        s *= -1;
+    }
+    Swal.fire({ title: "Aproximación Pi", text: `Resultado: ${pi}`, icon: "info" });
 }
