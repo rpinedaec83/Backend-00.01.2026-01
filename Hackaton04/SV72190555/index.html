@@ -32,19 +32,24 @@
 
         <div class="grid">
             <!-- 7 botones -->
-            <button onclick="ejecutarEjercicio(1.1)">Ejercicio 01</button>
+            <button onclick="ejecutarEjercicio(101)">Ejercicio 01</button>
             
-            <button onclick="ejecutarEjercicio(1.2)">Ejercicio 02</button>
-            <button onclick="ejecutarEjercicio(1.3)">Ejercicio 03</button>
-            <button onclick="ejecutarEjercicio(1.4)">Ejercicio 04</button>
-            <button onclick="ejecutarEjercicio(1.5)">Ejercicio 05</button>
-            <button onclick="ejecutarEjercicio(1.6)">Ejercicio 06</button>
-            <button onclick="ejecutarEjercicio(1.7)">Ejercicio 07</button>
+            <button onclick="ejecutarEjercicio(102)">Ejercicio 02</button>
+            <button onclick="ejecutarEjercicio(103)">Ejercicio 03</button>
+            <button onclick="ejecutarEjercicio(104)">Ejercicio 04</button>
+            <button onclick="ejecutarEjercicio(105)">Ejercicio 05</button>
+            <button onclick="ejecutarEjercicio(106)">Ejercicio 06</button>
+            <button onclick="ejecutarEjercicio(107)">Ejercicio 07</button>
             
         </div>
 
         <br>
 
+    </div>
+
+    <!-- ZONA DE EJERCICIOS INCRUSTADA -->
+    <div id="zona-ejercicio" class="contenedor card gloss" style="display: none; margin-top: 30px;">
+        <!-- Aquí se cargarán los ejercicios dinámicamente -->
     </div>
 
     <!-- == reto 2 == -->
@@ -59,30 +64,30 @@
 
             <!--<button onclick="ejecutar(NombreEnJs)">NombreBoton </button>-->
 
-            <button onclick="ejecutarEjercicio(2.1)">Ejercicio 01</button>
-            <button onclick="ejecutarEjercicio(2.2)">Ejercicio 02</button>
-            <button onclick="ejecutarEjercicio(2.3)">Ejercicio 03</button>
-            <button onclick="ejecutarEjercicio(2.4)">Ejercicio 04</button>
-            <button onclick="ejecutarEjercicio(2.5)">Ejercicio 05</button>
-            <button onclick="ejecutarEjercicio(2.6)">Ejercicio 06</button>
-            <button onclick="ejecutarEjercicio(2.7)">Ejercicio 07</button>
-            <button onclick="ejecutarEjercicio(2.8)">Ejercicio 08</button>
-            <button onclick="ejecutarEjercicio(2.9)">Ejercicio 09</button>
-            <button onclick="ejecutarEjercicio(2.10)">Ejercicio 10</button>
+            <button onclick="ejecutarEjercicio(201)">Ejercicio 01</button>
+            <button onclick="ejecutarEjercicio(202)">Ejercicio 02</button>
+            <button onclick="ejecutarEjercicio(203)">Ejercicio 03</button>
+            <button onclick="ejecutarEjercicio(204)">Ejercicio 04</button>
+            <button onclick="ejecutarEjercicio(205)">Ejercicio 05</button>
+            <button onclick="ejecutarEjercicio(206)">Ejercicio 06</button>
+            <button onclick="ejecutarEjercicio(207)">Ejercicio 07</button>
+            <button onclick="ejecutarEjercicio(208)">Ejercicio 08</button>
+            <button onclick="ejecutarEjercicio(209)">Ejercicio 09</button>
+            <button onclick="ejecutarEjercicio(210)">Ejercicio 10</button>
 
-            <button onclick="ejecutarEjercicio(2.11)">Ejercicio 11</button>
-            <button onclick="ejecutarEjercicio(2.12)">Ejercicio 12</button>
-            <button onclick="ejecutarEjercicio(2.13)">Ejercicio 13</button>
-            <button onclick="ejecutarEjercicio(2.14)">Ejercicio 14</button>
-            <button onclick="ejecutarEjercicio(2.15)">Ejercicio 15</button>
-            <button onclick="ejecutarEjercicio(2.16)">Ejercicio 16</button>
-            <button onclick="ejecutarEjercicio(2.17)">Ejercicio 17</button>
-            <button onclick="ejecutarEjercicio(2.18)">Ejercicio 18</button>
-            <button onclick="ejecutarEjercicio(2.19)">Ejercicio 19</button>
-            <button onclick="ejecutarEjercicio(2.20)">Ejercicio 20</button>
+            <button onclick="ejecutarEjercicio(211)">Ejercicio 11</button>
+            <button onclick="ejecutarEjercicio(212)">Ejercicio 12</button>
+            <button onclick="ejecutarEjercicio(213)">Ejercicio 13</button>
+            <button onclick="ejecutarEjercicio(214)">Ejercicio 14</button>
+            <button onclick="ejecutarEjercicio(215)">Ejercicio 15</button>
+            <button onclick="ejecutarEjercicio(216)">Ejercicio 16</button>
+            <button onclick="ejecutarEjercicio(217)">Ejercicio 17</button>
+            <button onclick="ejecutarEjercicio(218)">Ejercicio 18</button>
+            <button onclick="ejecutarEjercicio(219)">Ejercicio 19</button>
+            <button onclick="ejecutarEjercicio(220)">Ejercicio 20</button>
 
             <button onclick="ejecutarEjercicio(2.21)">Ejercicio 21</button>
-            <button onclick="ejecutarEjercicio(2.22)">Ejercicio 22</button>
+            <button onclick="ejecutarEjercicio(222)">Ejercicio 22</button>
             
         </div>
 
@@ -98,22 +103,26 @@
     <!-- ========================= -->
     <script>
         function ejecutarEjercicio(numero) {
-            const nombreFuncion = `ejercicio${String(numero).padStart(2, "0")}`;
+            const nombreFuncion = `ejercicio${String(numero).replace('.', '')}`;
 
             if (typeof window[nombreFuncion] === "function") {
                 window[nombreFuncion]();
             } else {
-                Swal.fire({
-                    title: "Ejercicio no implementado",
-                    text: `El ${nombreFuncion} aún no existe`,
-                    icon: "warning"
-                });
+                const zona = document.getElementById("zona-ejercicio");
+                zona.style.display = "block";
+                zona.innerHTML = `
+                    <h2>⚠️ Ejercicio no implementado</h2>
+                    <p>El ejercicio <strong>${numero}</strong> aún no está desarrollado.</p>
+                    <button onclick="limpiarTodo()">Cerrar</button>
+                `;
+                zona.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
         function limpiarTodo() {
             const zona = document.getElementById("zona-ejercicio");
             if (zona) {
+                zona.style.display = "none";
                 zona.innerHTML = "";
             }
         }

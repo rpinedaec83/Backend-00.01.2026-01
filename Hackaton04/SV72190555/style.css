@@ -188,3 +188,60 @@ a:hover {
 .spacer {
   height: 24px;
 }
+
+/* ---------- CONTENEDOR PRINCIPAL ---------- */
+.contenedor {
+  max-width: 1000px;
+  margin: 30px auto;
+}
+
+/* ---------- GRID DE BOTONES ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* ---------- ZONA DE EJERCICIOS ---------- */
+#zona-ejercicio {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#zona-ejercicio h2 {
+  margin-top: 0;
+}
+
+#zona-ejercicio code {
+  display: block;
+  background: rgba(0,0,0,0.05);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  overflow-x: auto;
+}
+
+/* ---------- DIVIDER ---------- */
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(120,180,220,0.4),
+    transparent
+  );
+  margin: 40px 0;
+}
