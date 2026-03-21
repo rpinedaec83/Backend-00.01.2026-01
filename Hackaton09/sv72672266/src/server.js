@@ -1,17 +1,20 @@
 const express = require('express');
+const { userRouter } = require('./routes/user.route');
+const { sequelize } = require('./models');
 require("dotenv").config();
 
-APP_PORT = process.env.PORT;
+APP_PORT = process.env.PORT || 8000;
 
 const app = express();
 
+// Middlewares
 app.use(express.json());
 
-app.use((req,res,next)=>{
-    res.header(
-        "Access-Control-Allow-Origin",
-        "Origin, Content-Type, Accept"
-    );
+// CORS
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     next();
 });
 
@@ -24,15 +27,25 @@ app.get('/',(req,res)=>{
 });
 
 app.get('/health',(req,res)=>{
-    res.json({status:true})
+    res.json({ status:true })
 });
 
-app.listen(process.env.PORT || 3000 , async ()=>{
+// Rutas
+app.use('/users', userRouter);
+
+// Inicio del servidor
+const startServer = async () => {
     try {
-        //await syncDB();
-        console.log("Base de datos sincronizada")
+        await sequelize.authenticate();
+        console.log('DB conectada');
+
+        app.listen(APP_PORT, () => {
+            console.log(`Server Ready on port ${APP_PORT}`);
+        });
+
     } catch (error) {
-        console.error(error)
+        console.error('Error al iniciar:', error);
     }
-    console.log(`Server Ready in port ${process.env.PORT}` )
-});
+};
+
+startServer();
