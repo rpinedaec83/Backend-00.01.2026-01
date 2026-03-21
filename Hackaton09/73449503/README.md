@@ -65,5 +65,14 @@ Ver `.env.example`. Importantes:
 ## Pruebas rapidas
 Hay ejemplos de `curl` en `docs/curl.md`.
 
+## Postman
+Importa la coleccion en `docs/postman_collection.json`.
+
+## Tests
+Ejecuta:
+```bash
+npm test
+```
+
 ## Evidencias
 Coloca capturas en `docs/screenshots/`.
