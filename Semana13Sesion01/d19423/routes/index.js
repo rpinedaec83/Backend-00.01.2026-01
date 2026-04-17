@@ -22,5 +22,6 @@ router.route('/profile')
   // .options((req,res)=>res.json({message: "options Profile"}))
 
 router.use('/v1', v1Router );
+router.use('/v2',require('./v2'))
 
 module.exports = router;
