@@ -56,6 +56,11 @@ app.post('/api/inventario/abastecer', async (req, res) => {
     const { tipo } = req.body;
     let inv = await Inventario.findOne();
     let mensajeLog = "";
+
+    if (!inv) {
+        inv = new Inventario();
+        await inv.save();
+    }
     
     if (tipo === 'materia_prima') { inv.tablones += 3; mensajeLog = "Se compró un Lote de Tablones (+3)"; }
     if (tipo === 'insumo') { inv.goma_kg += 1; mensajeLog = "Se compró un Lote de Goma (+1kg)"; }
