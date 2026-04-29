@@ -36,8 +36,8 @@ wsServer.on("request",(request)=>  {
 
         try {
           const nuevoMensaje = new Message({
-            usuario:data.user,
-            mensaje: data.text
+            user:data.user,
+            text: data.text
           }); 
             await nuevoMensaje.save();
             console.log("Guardado en DB:", data);
