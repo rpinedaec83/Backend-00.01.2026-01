@@ -1,0 +1,25 @@
+{
+  "name": "sv73449503",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/server.js",
+    "validate": "node --test",
+    "validate3": "npm run validate && npm run validate && npm run validate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "passport": "^0.7.0",
+    "passport-oauth2": "^1.8.0",
+    "sqlite3": "^6.0.1",
+    "stripe": "^22.1.1"
+  }
+}
