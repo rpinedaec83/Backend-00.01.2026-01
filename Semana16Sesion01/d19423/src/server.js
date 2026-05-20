@@ -47,6 +47,7 @@ app.get('/', (req,res)=>{
 
 
 let username;
+let connections =[];
 
 function authenticate(req,res){
     if(!req.session.user){
@@ -89,7 +90,12 @@ function finishOAuthLogin(req,res){
     const oauthEmail = getOAuthEmail(req.user);
     if(!oauthEmail) return res.redirect('/failed');
 
-    const sql = "REPLACE INTO login (username,password) VALUES(?,?);"
+    const sql = `
+        INSERT INTO login (username, password)
+        VALUES ($1, $2)
+        ON CONFLICT (username)
+        DO UPDATE SET password = EXCLUDED.password;
+    `;
     con.query(sql, [oauthEmail,'oauth'], (err,result)=>{
         if(err) throw err;
         req.session.user =  oauthEmail;
@@ -109,5 +115,94 @@ function getOAuthEmail(user){
     return user.username || user.id
 }
 
+function login(req,res){
+    let post  = req.body;
+    username = post.user;
+    let password = post.password;
+
+    const sql = "SELECT * FROM login WHERE username = $1";
+    con.query(sql,[username],(err,result)=>{
+        if(err) throw err;
+
+        if(result.rows.length === 1){
+            const user = result.rows[0];
+            if(password == user.password){
+                req.session.user = post.user;
+                username = post.user;
+                res.redirect('/chat_start')
+            }
+            else{
+                res.redirect('/login')
+            }
+        }else{
+            res.redirect('/login')
+        }
+    })
+}
+
+function chat_start() {
+    // ===================================Sockets starts  =========================
+    io.sockets.on('connection', function (socket) {
+        connections.push(socket);
+         //console.log("Connected:  %s Socket running", connections.length);
+        // ====================Disconnect==========================================
+        socket.on('disconnect', function (data) {
+            connections.splice(connections.indexOf(data), 1);
+            //console.log('Disconnected : %s sockets running', connections.length);
+        });
+        socket.on('initial-messages', function (data) {
+            var sql = "SELECT * FROM message ";
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+
+                var jsonMessages = JSON.stringify(result.rows);
+                // console.log(jsonMessages);
+                io.sockets.emit('initial-message', { msg: jsonMessages });
+            });
+        });
+
+        socket.on('username', function (data) {
+            socket.emit('username', { username: username });
+            //io.sockets.emit('username', {username: username});
+        });
+        socket.on('send-message', function (data, user) {
+            console.log(user);
+            var sql = 'INSERT INTO message (message, "user") VALUES ($1, $2)';
+            con.query(sql, [data, user], function (err, result) {
+                console.log(err)
+                if (err) throw err;
+                console.log("1 record inserted");
+            });
+            //ChatBot IA
+            io.sockets.emit('new-message', { msg: data, username: user });
+        })
+
+        socket.on('typing', function (data, user) {
+            //console.log(user);
+            io.sockets.emit('typing', { msg: data, username: user });
+        })
+    })
+}
+
+
+
+
+app.get('/login', (req,res)=>{
+    authenticate(req,res);
+});
+app.post('/login',(req,res)=>{
+    login(req,res);
+});
+
+app.get('/chat_start',(req,res)=>{
+    authenticate(req,res);
+})
+app.get('/logout',(req,res)=>{
+    console.log("llego el logout");
+    delete req.session.user;
+    req.session = null;
+    res.redirect('/login');
+})
+chat_start();
 
 server.listen(PORT,()=>console.log(`Servidor iniciado en el puerto ${PORT}`));
