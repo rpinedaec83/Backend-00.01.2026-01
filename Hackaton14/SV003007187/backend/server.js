@@ -3,24 +3,40 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 const db = require('./db');
 
 const app = express();
 const server = http.createServer(app);
+
+// SOCKET.IO 
 const io = socketIo(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"]
+    origin: process.env.NODE_ENV === 'production' 
+        ? process.env.CLIENT_URL || 'https://tu-app.onrender.com' 
+        : '*',
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
   }
 });
+
 const PORT = process.env.PORT || 3000;
 
+//  MIDDLEWARES 
 app.use(cors());
 app.use(express.json());
 
-// RUTAS
 
-//  Obtener todos los mensajes
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+
+
+// Obtener todos los mensajes
 app.get('/api/messages', (req, res) => {
   db.getAllMessages((err, messages) => {
     if (err) {
@@ -31,7 +47,7 @@ app.get('/api/messages', (req, res) => {
   });
 });
 
-//  Guardar mensaje (API)
+// Guardar mensaje (API)
 app.post('/api/messages', (req, res) => {
   const { text, author } = req.body;
   db.insertMessage(text, author || 'user', (err, id) => {
@@ -43,7 +59,7 @@ app.post('/api/messages', (req, res) => {
   });
 });
 
-//  Borrar TODO el historial
+// Borrar TODO el historial
 app.delete('/api/chat/clear-history', (req, res) => {
   db.deleteAllMessages((err) => {
     if (err) {
@@ -55,7 +71,7 @@ app.delete('/api/chat/clear-history', (req, res) => {
   });
 });
 
-//  Editar un mensaje
+// Editar un mensaje
 app.put('/api/chat/edit-message/:id', (req, res) => {
   const { id } = req.params;
   const { text } = req.body;
@@ -70,7 +86,7 @@ app.put('/api/chat/edit-message/:id', (req, res) => {
   });
 });
 
-//  Eliminar un mensaje específico
+// Eliminar un mensaje específico
 app.delete('/api/chat/delete-message/:id', (req, res) => {
   const { id } = req.params;
   
@@ -84,12 +100,12 @@ app.delete('/api/chat/delete-message/:id', (req, res) => {
   });
 });
 
-//  Ruta de prueba
+// Ruta de prueba
 app.get('/test', (req, res) => {
   res.json({ message: 'Servidor funcionando correctamente' });
 });
 
-// .IO 
+// SOCKET.IO 
 io.on('connection', (socket) => {
   console.log(` Cliente conectado: ${socket.id}`);
   
@@ -102,15 +118,15 @@ io.on('connection', (socket) => {
           const newMessage = messages.find(m => m.id === id);
           io.emit('newMessage', newMessage);
           
-          //  BOT
+          // BOT
           const userText = data.text.toLowerCase();
           let botReply = null;
           
-          if (userText.includes('hola')) botReply = '¡Hola! ¿Cómo estás? ';
+          if (userText.includes('hola')) botReply = '¡Hola! ¿Cómo estás? 😊';
           else if (userText.includes('como estas')) botReply = '¡Muy bien! Gracias por preguntar. ¿Y tú?';
-          else if (userText.includes('gracias')) botReply = '¡De nada! ';
+          else if (userText.includes('gracias')) botReply = '¡De nada! 🤖';
           else if (userText.includes('ayuda')) botReply = 'Comandos: "hola", "cómo estás", "gracias", "adiós"';
-          else if (userText.includes('adios')) botReply = '¡Adiós! ';
+          else if (userText.includes('adios')) botReply = '¡Adiós! Vuelve pronto 👋';
           
           if (botReply) {
             setTimeout(() => {
