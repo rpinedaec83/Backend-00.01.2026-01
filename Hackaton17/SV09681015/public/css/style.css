@@ -380,45 +380,98 @@ body {
 /* =============================================
    RESPONSIVE - MÓVIL
    ============================================= */
+/* =============================================
+   RESPONSIVE - MÓVIL
+   ============================================= */
 
 .menu-btn {
   display: none;
 }
 
+@supports (-webkit-touch-callout: none) {
+  .chat-page {
+    height: -webkit-fill-available;
+  }
+}
+
 @media (max-width: 768px) {
-  /* Footer del sidebar siempre visible */
-  .sidebar-footer {
-    flex-shrink: 0;
-    padding-bottom: env(safe-area-inset-bottom, 0.75rem);
+
+  /* LAYOUT PRINCIPAL */
+  .chat-page {
+    height: 100dvh;
   }
 
-  /* Espacio seguro para el input en móviles con notch/barra */
+  .chat-main {
+    width: 100%;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .messages-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem;
+    min-height: 0;
+  }
+
   .message-form {
+    flex-shrink: 0;
     padding: 0.75rem;
     padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
-    flex-shrink: 0;
     background: var(--bg-card);
     border-top: 1px solid var(--border);
   }
 
-  /* SIDEBAR oculto por defecto en móvil */
+  /* SIDEBAR */
   .sidebar {
     position: fixed;
     top: 0;
     left: -260px;
-    height: 100vh;
     width: 260px;
+    height: 100dvh;
     z-index: 200;
     transition: left 0.3s ease;
     box-shadow: 4px 0 20px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
-  /* Sidebar abierto */
   .sidebar.open {
     left: 0;
   }
 
-  /* Overlay oscuro detrás del sidebar */
+  .online-section {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-sidebar);
+    border-top: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .user-avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .logout-btn {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  /* OVERLAY */
   .sidebar-overlay {
     position: fixed;
     inset: 0;
@@ -433,77 +486,8 @@ body {
     opacity: 1;
     pointer-events: all;
   }
-  /* Sidebar con scroll interno para que el footer siempre sea visible */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
 
-  .online-section {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-  }
-
-  .sidebar-footer {
-    flex-shrink: 0;
-    background: var(--bg-sidebar);
-    border-top: 1px solid var(--border);
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .logout-btn {
-    font-size: 1.3rem;
-    padding: 0.3rem 0.5rem;
-    color: var(--text-secondary);
-  }
-
-  .user-avatar {
-    width: 34px;
-    height: 34px;
-  }
-
-  /* Chat principal ocupa toda la altura disponible */
-  .chat-page {
-    height: 100dvh; /* dvh funciona mejor en móvil con teclado */
-  }
-
-  .chat-main {
-    width: 100%;
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  /* Mensajes ocupa el espacio restante */
-  .messages-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0.75rem;
-    min-height: 0; /* importante para que flex funcione */
-  }
-
-  /* Input siempre visible en la parte inferior */
-  .message-form {
-    padding: 0.75rem;
-    flex-shrink: 0;
-    position: sticky;
-    bottom: 0;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-  }
-
-  /* Chat ocupa todo el ancho */
-  .chat-main {
-    width: 100%;
-  }
-
-  /* Botón hamburguesa visible */
+  /* HEADER */
   .menu-btn {
     display: flex;
     align-items: center;
@@ -519,11 +503,9 @@ body {
     flex-shrink: 0;
   }
 
-  .header-stack { display: none; }
-
-  .messages-container { padding: 0.75rem; }
-
-  .message-form { padding: 0.75rem; }
+  .header-stack {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
