@@ -370,6 +370,24 @@ body {
 .send-btn:hover { background: var(--accent-hover); }
 .send-btn:active { transform: scale(0.97); }
 
+.divider {
+    max-width: 1200px;
+    height: 1px;
+    margin: 25px auto;
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--primary),
+        transparent
+    );
+    opacity: 0.8;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
 /* =============================================
    RESPONSIVE - MÓVIL
    ============================================= */
