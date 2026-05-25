@@ -17,6 +17,7 @@ const chatRoutes = require("../routes/chat");
 // CONFIGURACIÓN DE LA APP
 // =============================================
 const app = express();
+app.set("trust proxy", 1);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
