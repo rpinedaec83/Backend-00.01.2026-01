@@ -167,7 +167,7 @@ io.on("connection", (socket) => {
 // =============================================
 async function startServer() {
   await initDB();
-  server.listen(PORT, () => {
+  server.listen(PORT, "0.0.0.0", () => {
     console.log(`\n🚀 Servidor corriendo en http://localhost:${PORT}`);
     console.log(`📦 Entorno: ${process.env.NODE_ENV || "development"}`);
     console.log(`🔐 OAuth Google: Configurado`);
