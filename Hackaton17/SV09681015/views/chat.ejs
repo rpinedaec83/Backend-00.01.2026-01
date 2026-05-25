@@ -39,9 +39,12 @@
   <!-- MAIN CHAT -->
   <main class="chat-main">
     <header class="chat-header">
+      <button class="menu-btn" id="menu-btn">☰</button>
       <h2 id="current-room"># general</h2>
       <span class="header-stack">Express · Socket.io · MySQL · OAuth</span>
     </header>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="messages-container" id="messages">
       <% messages.forEach(msg => { %>
@@ -85,5 +88,22 @@
   </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/chat.js"></script>
+
+  <script>
+  const menuBtn = document.getElementById("menu-btn");
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.getElementById("sidebar-overlay");
+
+  menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("open");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("open");
+  });
+</script>
+
 </body>
 </html>
