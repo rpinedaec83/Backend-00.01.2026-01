@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HACKATON 17</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>HACKATON 17</h1>
+
+      <section class="card">
+        <h2>Estado del sistema</h2>
+        <a class="button" id="googleLoginBtn" href="/auth/google">Iniciar sesión con Google</a>
+      </section>
+
+      <section class="card">
+        <h2>Chat en tiempo real</h2>
+        <form id="chatForm">
+          <input id="username" placeholder="Tu nombre" required />
+          <input id="message" placeholder="Escribe un mensaje" required />
+          <button type="submit">Enviar</button>
+        </form>
+        <p id="usersOnline">Usuarios conectados: 0</p>
+        <ul id="messages"></ul>
+      </section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
