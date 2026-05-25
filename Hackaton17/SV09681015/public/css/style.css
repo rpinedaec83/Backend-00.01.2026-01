@@ -370,23 +370,12 @@ body {
 .send-btn:hover { background: var(--accent-hover); }
 .send-btn:active { transform: scale(0.97); }
 
-.divider {
-    max-width: 1200px;
-    height: 1px;
-    margin: 25px auto;
-    background: linear-gradient(
-        to right,
-        transparent,
-        var(--primary),
-        transparent
-    );
-    opacity: 0.8;
+/* Evitar scroll del body en móvil */
+@supports (-webkit-touch-callout: none) {
+  .chat-page {
+    height: -webkit-fill-available;
+  }
 }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 
 /* =============================================
    RESPONSIVE - MÓVIL
@@ -397,6 +386,20 @@ body {
 }
 
 @media (max-width: 768px) {
+  /* Footer del sidebar siempre visible */
+  .sidebar-footer {
+    flex-shrink: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0.75rem);
+  }
+
+  /* Espacio seguro para el input en móviles con notch/barra */
+  .message-form {
+    padding: 0.75rem;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+  }
 
   /* SIDEBAR oculto por defecto en móvil */
   .sidebar {
