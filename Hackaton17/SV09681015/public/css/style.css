@@ -373,42 +373,52 @@ body {
 /* =============================================
    RESPONSIVE - MÓVIL
    ============================================= */
-/* Ocultar botón menú en desktop */
+
 .menu-btn {
   display: none;
 }
 
-/* Tablets y móviles grandes */
 @media (max-width: 768px) {
-  /* Login */
-  .login-container {
-    padding: 0.5rem;
-  }
 
-  /* Chat: ocultar sidebar y mostrar solo el chat */
+  /* SIDEBAR oculto por defecto en móvil */
   .sidebar {
-    display: none;
     position: fixed;
     top: 0;
-    left: 0;
+    left: -260px;
     height: 100vh;
-    z-index: 100;
     width: 260px;
+    z-index: 200;
+    transition: left 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.4);
   }
 
+  /* Sidebar abierto */
   .sidebar.open {
-    display: flex;
+    left: 0;
   }
 
+  /* Overlay oscuro detrás del sidebar */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Chat ocupa todo el ancho */
   .chat-main {
     width: 100%;
   }
 
-  /* Botón hamburguesa para abrir sidebar */
-  .chat-header {
-    gap: 0.75rem;
-  }
-
+  /* Botón hamburguesa visible */
   .menu-btn {
     display: flex;
     align-items: center;
@@ -424,58 +434,16 @@ body {
     flex-shrink: 0;
   }
 
-  .chat-header h2 {
-    flex: 1;
-  }
+  .header-stack { display: none; }
 
-  /* Overlay cuando sidebar está abierto */
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 99;
-  }
+  .messages-container { padding: 0.75rem; }
 
-  .sidebar-overlay.open {
-    display: block;
-  }
-
-  /* Mensajes */
-  .messages-container {
-    padding: 1rem;
-  }
-
-  .message-form {
-    padding: 0.75rem 1rem;
-  }
-
-  .header-stack {
-    display: none;
-  }
+  .message-form { padding: 0.75rem; }
 }
 
-/* Móviles pequeños */
 @media (max-width: 480px) {
-  .login-logo h1 {
-    font-size: 1.5rem;
-  }
-
-  .btn-google {
-    font-size: 0.875rem;
-    padding: 0.75rem 1rem;
-  }
-
-  .msg-avatar,
-  .msg-avatar-placeholder {
-    width: 28px;
-    height: 28px;
-    font-size: 0.75rem;
-  }
-
-  .send-btn {
-    padding: 0.7rem 0.875rem;
-    font-size: 0.8rem;
-  }
+  .login-logo h1 { font-size: 1.5rem; }
+  .btn-google { font-size: 0.875rem; padding: 0.75rem 1rem; }
+  .msg-avatar, .msg-avatar-placeholder { width: 28px; height: 28px; }
+  .send-btn { padding: 0.7rem 0.875rem; font-size: 0.8rem; }
 }
-

@@ -94,14 +94,24 @@
   const sidebar = document.querySelector(".sidebar");
   const overlay = document.getElementById("sidebar-overlay");
 
+  // Abrir sidebar
   menuBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-    overlay.classList.toggle("open");
+    sidebar.classList.add("open");
+    overlay.classList.add("open");
   });
 
+  // Cerrar sidebar al tocar el overlay
   overlay.addEventListener("click", () => {
     sidebar.classList.remove("open");
     overlay.classList.remove("open");
+  });
+
+  // Cerrar sidebar al elegir una sala
+  document.querySelectorAll(".room-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("open");
+    });
   });
 </script>
 
