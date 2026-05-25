@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | HackChat</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="chat-page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">HackChat</span>
+    </div>
+
+    <div class="rooms">
+      <p class="section-label">Salas</p>
+      <button class="room-btn active" data-room="general"># general</button>
+      <button class="room-btn" data-room="dev"># dev</button>
+      <button class="room-btn" data-room="random"># random</button>
+    </div>
+
+    <div class="online-section">
+      <p class="section-label">En línea (<span id="online-count">0</span>)</p>
+      <ul id="online-list"></ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <% if (user.avatar) { %>
+        <img src="<%= user.avatar %>" class="user-avatar" alt="avatar" />
+      <% } %>
+      <span class="user-name"><%= user.display_name %></span>
+      <a href="/auth/logout" class="logout-btn" title="Cerrar sesión">↩</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CHAT -->
+  <main class="chat-main">
+    <header class="chat-header">
+      <h2 id="current-room"># general</h2>
+      <span class="header-stack">Express · Socket.io · MySQL · OAuth</span>
+    </header>
+
+    <div class="messages-container" id="messages">
+      <% messages.forEach(msg => { %>
+        <div class="message">
+          <% if (msg.avatar) { %>
+            <img src="<%= msg.avatar %>" class="msg-avatar" alt="<%= msg.username %>" />
+          <% } else { %>
+            <div class="msg-avatar-placeholder"><%= msg.username[0].toUpperCase() %></div>
+          <% } %>
+          <div class="msg-body">
+            <div class="msg-meta">
+              <span class="msg-author"><%= msg.username %></span>
+              <span class="msg-time"><%= new Date(msg.created_at).toLocaleTimeString('es-PE', {hour: '2-digit', minute: '2-digit'}) %></span>
+            </div>
+            <p class="msg-content"><%= msg.content %></p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <div id="typing-indicator" class="typing-indicator hidden"></div>
+
+    <form class="message-form" id="message-form">
+      <input
+        type="text"
+        id="message-input"
+        placeholder="Escribe un mensaje en #general..."
+        autocomplete="off"
+        maxlength="500"
+      />
+      <button type="submit" class="send-btn">Enviar ↑</button>
+    </form>
+  </main>
+
+  <!-- Datos del usuario para el JS -->
+  <script>
+    window.CURRENT_USER = {
+      username: "<%= user.display_name %>",
+      avatar: "<%= user.avatar || '' %>"
+    };
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>

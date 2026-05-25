@@ -1,0 +1,25 @@
+# =============================================
+# RENDER.YAML - Despliegue en Render.com
+# Documentación: https://render.com/docs/render-yaml
+# =============================================
+
+services:
+  # Servicio web principal (Node.js)
+  - type: web
+    name: hackchat-app
+    runtime: node
+    buildCommand: npm install
+    startCommand: node src/index.js
+    plan: free               # Plan gratuito de Render
+
+    # Variables de entorno (configurar en el dashboard de Render)
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+
+      # Las siguientes se configuran manualmente en Render Dashboard:
+      # DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
+      # SESSION_SECRET
+      # GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL
