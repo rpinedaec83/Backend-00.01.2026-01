@@ -433,6 +433,39 @@ body {
     opacity: 1;
     pointer-events: all;
   }
+  /* Sidebar con scroll interno para que el footer siempre sea visible */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .online-section {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  .sidebar-footer {
+    flex-shrink: 0;
+    background: var(--bg-sidebar);
+    border-top: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logout-btn {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  .user-avatar {
+    width: 34px;
+    height: 34px;
+  }
 
   /* Chat principal ocupa toda la altura disponible */
   .chat-page {
