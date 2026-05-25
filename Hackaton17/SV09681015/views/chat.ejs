@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
-  <title><%= title %> | HackChat</title>
+  <title>
+    <%= title %> | HackChat
+  </title>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
+
 <body class="chat-page">
 
   <!-- SIDEBAR -->
@@ -30,9 +34,11 @@
     <div class="sidebar-footer">
       <% if (user.avatar) { %>
         <img src="<%= user.avatar %>" class="user-avatar" alt="avatar" />
-      <% } %>
-      <span class="user-name"><%= user.display_name %></span>
-      <a href="/auth/logout" class="logout-btn" title="Cerrar sesión">↩</a>
+        <% } %>
+          <span class="user-name">
+            <%= user.display_name %>
+          </span>
+          <a href="/auth/logout" class="logout-btn" title="Cerrar sesión">↩</a>
     </div>
   </aside>
 
@@ -47,42 +53,42 @@
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="messages-container" id="messages">
-      <% messages.forEach(msg => { %>
+      <% messages.forEach(msg=> { %>
         <div class="message">
           <% if (msg.avatar) { %>
             <img src="<%= msg.avatar %>" class="msg-avatar" alt="<%= msg.username %>" />
-          <% } else { %>
-            <div class="msg-avatar-placeholder"><%= msg.username[0].toUpperCase() %></div>
-          <% } %>
-          <div class="msg-body">
-            <div class="msg-meta">
-              <span class="msg-author"><%= msg.username %></span>
-              <span class="msg-time"><%= new Date(msg.created_at).toLocaleTimeString('es-PE', {hour: '2-digit', minute: '2-digit'}) %></span>
-            </div>
-            <p class="msg-content"><%= msg.content %></p>
-          </div>
+            <% } else { %>
+              <div class="msg-avatar-placeholder">
+                <%= msg.username[0].toUpperCase() %>
+              </div>
+              <% } %>
+                <div class="msg-body">
+                  <div class="msg-meta">
+                    <span class="msg-author">
+                      <%= msg.username %>
+                    </span>
+                    <span class="msg-time">
+                      <%= new Date(msg.created_at).toLocaleTimeString('es-PE', {hour: '2-digit' , minute: '2-digit' })
+                        %>
+                    </span>
+                  </div>
+                  <p class="msg-content">
+                    <%= msg.content %>
+                  </p>
+                </div>
         </div>
-      <% }) %>
+        <% }) %>
     </div>
 
     <div id="typing-indicator" class="typing-indicator hidden"></div>
 
     <form class="message-form" id="message-form">
-      <input
-        type="text"
-        id="message-input"
-        placeholder="Escribe un mensaje en #general..."
-        autocomplete="off"
-        maxlength="500"
-      />
+      <input type="text" id="message-input" placeholder="Escribe un mensaje en #general..." autocomplete="off"
+        maxlength="500" />
       <button type="submit" class="send-btn">Enviar ↑</button>
     </form>
   </main>
-  <br>
-    <div class="divider"></div>
-  <footer style="text-align:center; margin-top:40px; opacity:.6;">
-        Desarrollado por Richard Asto • 2026
-    </footer>
+
 
   <!-- Datos del usuario para el JS -->
   <script>
@@ -95,30 +101,36 @@
   <script src="/js/chat.js"></script>
 
   <script>
-  const menuBtn = document.getElementById("menu-btn");
-  const sidebar = document.querySelector(".sidebar");
-  const overlay = document.getElementById("sidebar-overlay");
+    const menuBtn = document.getElementById("menu-btn");
+    const sidebar = document.querySelector(".sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
 
-  // Abrir sidebar
-  menuBtn.addEventListener("click", () => {
-    sidebar.classList.add("open");
-    overlay.classList.add("open");
-  });
+    // Abrir sidebar
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.add("open");
+      overlay.classList.add("open");
+    });
 
-  // Cerrar sidebar al tocar el overlay
-  overlay.addEventListener("click", () => {
-    sidebar.classList.remove("open");
-    overlay.classList.remove("open");
-  });
-
-  // Cerrar sidebar al elegir una sala
-  document.querySelectorAll(".room-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    // Cerrar sidebar al tocar el overlay
+    overlay.addEventListener("click", () => {
       sidebar.classList.remove("open");
       overlay.classList.remove("open");
     });
-  });
-</script>
+
+    // Cerrar sidebar al elegir una sala
+    document.querySelectorAll(".room-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("open");
+      });
+    });
+  </script>
 
 </body>
+<br>
+<div class="divider"></div>
+<footer style="text-align:center; margin-top:40px; opacity:.6;">
+  Desarrollado por Richard Asto • 2026
+</footer>
+
 </html>
