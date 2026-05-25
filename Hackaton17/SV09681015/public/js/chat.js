@@ -4,7 +4,7 @@
 const socket = io();
 
 // Datos del usuario actual (inyectados por EJS)
-const { username, avatar } = window.CURRENT_USER;
+const { username, avatar, userId } = window.CURRENT_USER;
 
 // Referencias al DOM
 const messagesContainer = document.getElementById("messages");
@@ -22,7 +22,7 @@ let typingTimeout = null;
 // =============================================
 // UNIRSE A LA SALA AL CONECTAR
 // =============================================
-socket.emit("join-room", { username, avatar, room: currentRoom });
+socket.emit("join-room", { username, avatar, userId, room: currentRoom });
 
 // =============================================
 // CAMBIAR DE SALA
@@ -32,17 +32,14 @@ roomButtons.forEach((btn) => {
     const newRoom = btn.dataset.room;
     if (newRoom === currentRoom) return;
 
-    // Actualizar UI
     roomButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
 
-    // Cambiar sala en Socket.io
-    socket.emit("join-room", { username, avatar, room: newRoom });
+    socket.emit("join-room", { username, avatar, userId, room: newRoom });
     currentRoom = newRoom;
     currentRoomLabel.textContent = `# ${newRoom}`;
     messageInput.placeholder = `Escribe un mensaje en #${newRoom}...`;
 
-    // Limpiar mensajes y cargar del servidor (API REST)
     messagesContainer.innerHTML = "";
     loadMessages(newRoom);
   });
@@ -75,7 +72,6 @@ messageForm.addEventListener("submit", (e) => {
   socket.emit("send-message", { content, room: currentRoom });
   messageInput.value = "";
 
-  // Detener indicador de escritura
   socket.emit("stop-typing", { room: currentRoom });
   clearTimeout(typingTimeout);
 });
@@ -94,43 +90,33 @@ messageInput.addEventListener("input", () => {
 // =============================================
 // EVENTOS DE SOCKET.IO
 // =============================================
-
-// Nuevo mensaje recibido
 socket.on("new-message", (msg) => {
   renderMessage(msg);
   scrollToBottom();
 });
 
-// Usuario se unió
 socket.on("user-joined", ({ message }) => {
   renderSystemMessage(message);
 });
 
-// Usuario salió
 socket.on("user-left", ({ message }) => {
   renderSystemMessage(message);
 });
 
-// Actualizar lista de usuarios en línea
 socket.on("online-users", (users) => {
   onlineCount.textContent = users.length;
-  onlineList.innerHTML = users
-    .map((u) => `<li>${u.username}</li>`)
-    .join("");
+  onlineList.innerHTML = users.map((u) => `<li>${u.username}</li>`).join("");
 });
 
-// Alguien está escribiendo
 socket.on("user-typing", ({ username: typingUser }) => {
   typingIndicator.textContent = `${typingUser} está escribiendo...`;
   typingIndicator.classList.remove("hidden");
 });
 
-// Alguien dejó de escribir
 socket.on("user-stop-typing", () => {
   typingIndicator.classList.add("hidden");
 });
 
-// Error
 socket.on("error", ({ message }) => {
   console.error("Error del servidor:", message);
 });
@@ -183,5 +169,4 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// Scroll inicial al fondo
 scrollToBottom();

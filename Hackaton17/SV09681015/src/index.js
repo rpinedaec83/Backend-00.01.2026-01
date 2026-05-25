@@ -75,27 +75,23 @@ app.use("/chat", chatRoutes);
 // =============================================
 // SOCKET.IO - CHAT EN TIEMPO REAL
 // =============================================
-const onlineUsers = new Map(); // socketId -> { username, avatar, room }
+const onlineUsers = new Map(); // socketId -> { username, avatar, userId, room }
 
 io.on("connection", (socket) => {
   console.log(`🔌 Socket conectado: ${socket.id}`);
 
   // Usuario se une a una sala
-  socket.on("join-room", ({ username, avatar, room = "general" }) => {
+  socket.on("join-room", ({ username, avatar, userId, room = "general" }) => {
     socket.join(room);
-    onlineUsers.set(socket.id, { username, avatar, room });
+    onlineUsers.set(socket.id, { username, avatar, userId, room });
 
-    // Notificar a la sala que alguien entró
     socket.to(room).emit("user-joined", {
       username,
       message: `${username} se unió al chat`,
       timestamp: new Date().toISOString(),
     });
 
-    // Enviar lista actualizada de usuarios en línea
-    const usersInRoom = [...onlineUsers.values()].filter(
-      (u) => u.room === room
-    );
+    const usersInRoom = [...onlineUsers.values()].filter((u) => u.room === room);
     io.to(room).emit("online-users", usersInRoom);
 
     console.log(`👤 ${username} se unió a la sala: ${room}`);
@@ -107,10 +103,10 @@ io.on("connection", (socket) => {
     if (!userData) return;
 
     try {
-      // Guardar en MySQL
+      // ✅ Usar userId directo — sin subquery
       const [result] = await pool.query(
-        "INSERT INTO messages (user_id, username, content, room) VALUES ((SELECT id FROM users WHERE display_name = ? LIMIT 1), ?, ?, ?)",
-        [userData.username, userData.username, content, room]
+        "INSERT INTO messages (user_id, username, content, room) VALUES (?, ?, ?, ?)",
+        [userData.userId, userData.username, content, room]
       );
 
       const messageData = {
@@ -122,7 +118,6 @@ io.on("connection", (socket) => {
         timestamp: new Date().toISOString(),
       };
 
-      // Broadcast a todos en la sala (incluido el emisor)
       io.to(room).emit("new-message", messageData);
     } catch (err) {
       console.error("Error guardando mensaje:", err);
@@ -159,10 +154,7 @@ io.on("connection", (socket) => {
         timestamp: new Date().toISOString(),
       });
 
-      // Actualizar usuarios en línea
-      const usersInRoom = [...onlineUsers.values()].filter(
-        (u) => u.room === room
-      );
+      const usersInRoom = [...onlineUsers.values()].filter((u) => u.room === room);
       io.to(room).emit("online-users", usersInRoom);
 
       console.log(`❌ ${username} desconectado`);
@@ -174,7 +166,7 @@ io.on("connection", (socket) => {
 // INICIO DEL SERVIDOR
 // =============================================
 async function startServer() {
-  await initDB(); // Inicializar tablas en MySQL
+  await initDB();
   server.listen(PORT, () => {
     console.log(`\n🚀 Servidor corriendo en http://localhost:${PORT}`);
     console.log(`📦 Entorno: ${process.env.NODE_ENV || "development"}`);

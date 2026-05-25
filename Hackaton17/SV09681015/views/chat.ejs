@@ -68,8 +68,7 @@
                       <%= msg.username %>
                     </span>
                     <span class="msg-time">
-                      <%= new Date(msg.created_at).toLocaleTimeString('es-PE', {hour: '2-digit' , minute: '2-digit' })
-                        %>
+                      <%= new Date(msg.created_at).toLocaleTimeString('es-PE', {hour: '2-digit', minute: '2-digit'}) %>
                     </span>
                   </div>
                   <p class="msg-content">
@@ -89,12 +88,12 @@
     </form>
   </main>
 
-
   <!-- Datos del usuario para el JS -->
   <script>
     window.CURRENT_USER = {
       username: "<%= user.display_name %>",
-      avatar: "<%= user.avatar || '' %>"
+      avatar: "<%= user.avatar || '' %>",
+      userId: "<%= user.id %>"
     };
   </script>
   <script src="/socket.io/socket.io.js"></script>
@@ -105,19 +104,16 @@
     const sidebar = document.querySelector(".sidebar");
     const overlay = document.getElementById("sidebar-overlay");
 
-    // Abrir sidebar
     menuBtn.addEventListener("click", () => {
       sidebar.classList.add("open");
       overlay.classList.add("open");
     });
 
-    // Cerrar sidebar al tocar el overlay
     overlay.addEventListener("click", () => {
       sidebar.classList.remove("open");
       overlay.classList.remove("open");
     });
 
-    // Cerrar sidebar al elegir una sala
     document.querySelectorAll(".room-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         sidebar.classList.remove("open");
