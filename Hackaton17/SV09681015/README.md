@@ -52,7 +52,7 @@ hackathon-app/
 
 ### 1. Clonar e instalar dependencias
 ```bash
-git clone https://github.com/tu-usuario/hackathon-app.git
+git clone https://github.com/richard-asto/hackchat-app.git
 cd hackathon-app
 npm install
 ```
@@ -154,7 +154,7 @@ docker logs hackchat_mysql
 git init
 git add .
 git commit -m "Initial commit - HackChat"
-git remote add origin https://github.com/tu-usuario/hackathon-app.git
+git remote add origin https://github.com/richard-asto/hackchat-app.git
 git push -u origin main
 ```
 
@@ -193,7 +193,7 @@ En la sección **Environment**, agregar:
 ### Paso 6: Actualizar Google OAuth con la URL de Render
 1. Volver a [console.cloud.google.com](https://console.cloud.google.com)
 2. Ir a tu credencial OAuth
-3. Agregar en **URI de redirección**: `https://tu-app.onrender.com/auth/google/callback`
+3. Agregar en **URI de redirección**: `https://hackchat-app.onrender.com/auth/google/callback`
 
 ### Paso 7: Deploy
 - Render despliega automáticamente al hacer push a `main`
