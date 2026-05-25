@@ -16,8 +16,7 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 3000
+
 
       # Las siguientes se configuran manualmente en Render Dashboard:
       # DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
