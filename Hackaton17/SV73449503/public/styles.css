@@ -1,0 +1,81 @@
+:root {
+  --bg: #0b141f;
+  --card: #122033;
+  --text: #f4f6fb;
+  --accent: #37c6ab;
+  --muted: #9cb0cb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at 20% 20%, #1f3753, var(--bg));
+  color: var(--text);
+}
+
+.container {
+  max-width: 760px;
+  margin: 40px auto;
+  padding: 0 16px 32px;
+}
+
+.card {
+  background: color-mix(in srgb, var(--card) 85%, black);
+  padding: 18px;
+  border-radius: 14px;
+  margin-top: 20px;
+  border: 1px solid #2f4968;
+}
+
+.button,
+button {
+  background: var(--accent);
+  color: #062218;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#chatForm {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 8px;
+}
+
+input {
+  border-radius: 8px;
+  border: 1px solid #3b5473;
+  background: #0d1a2a;
+  color: var(--text);
+  padding: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  max-height: 260px;
+  overflow: auto;
+}
+
+li {
+  border-bottom: 1px dashed #324a66;
+  padding: 8px 0;
+}
+
+p {
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  #chatForm {
+    grid-template-columns: 1fr;
+  }
+}

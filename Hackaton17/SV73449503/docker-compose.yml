@@ -1,0 +1,37 @@
+services:
+  app:
+    build: .
+    container_name: hackaton17-app
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      SESSION_SECRET: hackaton17-session-secret
+      CLIENT_ORIGIN: http://localhost:3000
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: hackaton17
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      OAUTH_GOOGLE_CLIENT_ID: ${OAUTH_GOOGLE_CLIENT_ID:-}
+      OAUTH_GOOGLE_CLIENT_SECRET: ${OAUTH_GOOGLE_CLIENT_SECRET:-}
+      OAUTH_GOOGLE_CALLBACK_URL: ${OAUTH_GOOGLE_CALLBACK_URL:-http://localhost:3000/auth/google/callback}
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: hackaton17-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hackaton17
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  mysql_data:
