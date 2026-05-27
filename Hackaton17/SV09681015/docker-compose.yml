@@ -1,0 +1,68 @@
+# =============================================
+# DOCKER COMPOSE - HackChat
+# Levanta la app + MySQL juntos
+# Uso: docker-compose up --build
+# =============================================
+
+services:
+
+  # ── BASE DE DATOS MYSQL ──────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: hackchat_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql   # Datos persistentes
+    networks:
+      - hackchat_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── APLICACIÓN NODE.JS ────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hackchat_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: mysql         # Nombre del servicio MySQL (red interna Docker)
+      DB_PORT: 3306
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      SESSION_SECRET: ${SESSION_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_CALLBACK_URL: ${GOOGLE_CALLBACK_URL}
+    depends_on:
+      mysql:
+        condition: service_healthy   # Esperar a que MySQL esté listo
+    networks:
+      - hackchat_net
+
+# ── VOLÚMENES ────────────────────────────────────
+volumes:
+  mysql_data:
+    driver: local
+
+# ── RED INTERNA ──────────────────────────────────
+networks:
+  hackchat_net:
+    driver: bridge
