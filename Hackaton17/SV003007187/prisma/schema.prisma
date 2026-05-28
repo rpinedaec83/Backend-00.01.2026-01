@@ -1,4 +1,4 @@
-generator client {
+ generator client {
   provider = "prisma-client-js"
 }
 
@@ -16,8 +16,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cart  Cart?
+  cart   Cart?
   orders Order[]
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
 }
 
 model Product {
@@ -27,10 +36,12 @@ model Product {
   price       Float
   stock       Int
   imageUrl    String?
+  categoryId  Int?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  cartItems CartItem[]
+  category   Category?  @relation(fields: [categoryId], references: [id])
+  cartItems  CartItem[]
   orderItems OrderItem[]
 }
 

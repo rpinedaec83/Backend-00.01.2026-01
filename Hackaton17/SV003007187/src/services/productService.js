@@ -2,8 +2,37 @@
 
  const prisma = require('../config/db')
 
-const getAll = async () => {
-  return await prisma.product.findMany()
+const getAll = async (filters) => {
+  const page = parseInt(filters.page) || 1
+  const limit = Math.min(parseInt(filters.limit) || 10, 20)
+  const skip = (page - 1) * limit
+
+  const where = {}
+
+  if (filters.search) {
+    where.name = { contains: filters.search, mode: 'insensitive' }
+  }
+
+  if (filters.minPrice || filters.maxPrice) {
+    where.price = {}
+    if (filters.minPrice) where.price.gte = parseFloat(filters.minPrice)
+    if (filters.maxPrice) where.price.lte = parseFloat(filters.maxPrice)
+  }
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({ where, skip, take: limit, orderBy: { id: 'asc' } }),
+    prisma.product.count({ where })
+  ])
+
+  return {
+    data: products,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit)
+    }
+  }
 }
 
 const getById = async (id) => {
@@ -15,7 +44,6 @@ const getById = async (id) => {
 const create = async (data) => {
   return await prisma.product.create({ data })
 }
-
 
 const update = async (id, data) => {
   await getById(id)
@@ -31,5 +59,3 @@ const remove = async (id) => {
 }
 
 module.exports = { getAll, getById, create, update, remove }
-
- 
