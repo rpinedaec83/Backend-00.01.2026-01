@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HackChat — <%= user.display_name %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="chat-page">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="brand-icon-sm">⚡</span>
+      <span class="brand-name-sm">HackChat</span>
+    </div>
+
+    <!-- Usuario actual -->
+    <div class="current-user">
+      <img src="<%= user.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.display_name) + '&background=1a1a2e&color=e94560' %>"
+           alt="Avatar" class="user-avatar" />
+      <div class="user-info">
+        <span class="user-name"><%= user.display_name %></span>
+        <span class="user-email"><%= user.email %></span>
+      </div>
+    </div>
+
+    <!-- Salas disponibles -->
+    <div class="rooms-section">
+      <h3 class="section-title">SALAS</h3>
+      <ul class="rooms-list">
+        <li class="room-item active" data-room="general"># general</li>
+        <li class="room-item" data-room="tech"># tech</li>
+        <li class="room-item" data-room="random"># random</li>
+      </ul>
+    </div>
+
+    <!-- Usuarios en línea -->
+    <div class="online-section">
+      <h3 class="section-title">EN LÍNEA</h3>
+      <ul class="online-list" id="online-users">
+        <!-- Se rellena via Socket.io -->
+      </ul>
+    </div>
+
+    <!-- Logout -->
+    <div class="sidebar-footer">
+      <a href="/auth/logout" class="btn-logout">Cerrar sesión</a>
+    </div>
+  </aside>
+
+  <!-- Chat principal -->
+  <main class="chat-main">
+    <header class="chat-header">
+      <h2 class="chat-room-title"># <span id="room-label">general</span></h2>
+      <span class="chat-online-count"><span id="online-count">0</span> en línea</span>
+    </header>
+
+    <!-- Mensajes -->
+    <div class="messages-container" id="messages">
+      <div class="loading-msgs">Cargando mensajes...</div>
+    </div>
+
+    <!-- Indicador de escritura -->
+    <div class="typing-indicator" id="typing-indicator"></div>
+
+    <!-- Input de mensaje -->
+    <div class="chat-input-wrapper">
+      <form class="chat-form" id="chat-form">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Escribe un mensaje..."
+          autocomplete="off"
+          maxlength="500"
+        />
+        <button type="submit" class="btn-send">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Datos del usuario (pasados a JS) -->
+  <script>
+    window.CURRENT_USER = {
+      id: <%= user.id %>,
+      name: "<%= user.display_name.replace(/"/g, '&quot;') %>",
+      avatar: "<%= user.avatar || '' %>"
+    };
+    window.CURRENT_ROOM = "general";
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+
+</body>
+</html>
