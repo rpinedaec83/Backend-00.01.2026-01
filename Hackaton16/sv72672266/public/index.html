@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Socket Pagos</title>
+</head>
+<body>
+  <h1>Notificaciones de pagos</h1>
+
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+  <script>
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ik5lbGhvIEVzcGlub3phIiwiZW1haWwiOiJuZWxob2VtQGdtYWlsLmNvbSIsImlhdCI6MTc4MDU4OTUwOCwiZXhwIjoxNzgwNTk2NzA4fQ.d23MW8947oR5lezxc7oN4DiB6uNV4S02Oqz9KDhmWKQ";
+
+    const socket = io("http://localhost:3000", {
+      auth: {
+        token,
+      },
+    });
+
+    socket.on("socket:connected", (data) => {
+      console.log("Socket conectado:", data);
+    });
+
+    socket.on("payment:paid", (data) => {
+      console.log("Pago confirmado:", data);
+    });
+
+    socket.on("payment:failed", (data) => {
+      console.log("Pago fallido:", data);
+    });
+
+    socket.on("refund:created", (data) => {
+      console.log("Devolución creada:", data);
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("Error de socket:", error.message);
+    });
+  </script>
+</body>
+</html>
