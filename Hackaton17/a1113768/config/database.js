@@ -1,75 +1,53 @@
-const mongoose = require("mongoose");
+const mysql = require("mysql2/promise");
 
-// Conexión MongoDB
+// Pool de conexiones MySQL
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",
+  port: parseInt(process.env.DB_PORT) || 3306,
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "hackchat_db",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
+
+// Crear tablas si no existen
 async function initDB() {
   try {
-    const uri =
-      process.env.MONGO_URI ||
-      "mongodb://localhost:27017/hackchat_db";
+    const conn = await pool.getConnection();
 
-    await mongoose.connect(uri);
+    // Tabla de usuarios (creados via Google OAuth)
+    await conn.execute(`
+      CREATE TABLE IF NOT EXISTS users (
+        id           INT AUTO_INCREMENT PRIMARY KEY,
+        google_id    VARCHAR(255) UNIQUE NOT NULL,
+        display_name VARCHAR(255) NOT NULL,
+        email        VARCHAR(255) UNIQUE NOT NULL,
+        avatar       VARCHAR(500),
+        created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-    console.log("✅ Base de datos MongoDB inicializada correctamente");
+    // Tabla de mensajes del chat
+    await conn.execute(`
+      CREATE TABLE IF NOT EXISTS messages (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        user_id    INT NOT NULL,
+        username   VARCHAR(255) NOT NULL,
+        content    TEXT NOT NULL,
+        room       VARCHAR(100) DEFAULT 'general',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
+
+    conn.release();
+    console.log("✅ Base de datos inicializada correctamente");
   } catch (err) {
     console.error("❌ Error inicializando la base de datos:", err.message);
     throw err;
   }
 }
 
-// Schema de usuarios
-const userSchema = new mongoose.Schema({
-  google_id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  display_name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  avatar: String,
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
-// Schema de mensajes
-const messageSchema = new mongoose.Schema({
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  room: {
-    type: String,
-    default: "general",
-  },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
-const User = mongoose.model("User", userSchema);
-const Message = mongoose.model("Message", messageSchema);
-
-module.exports = {
-  mongoose,
-  initDB,
-  User,
-  Message,
-};
+module.exports = { pool, initDB };
