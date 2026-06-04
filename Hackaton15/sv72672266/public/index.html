@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cliente Socket Curier</title>
+</head>
+<body>
+    <h1>Socket Curier</h1>
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+    <script>
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Ikp1YW4gUMOpcmV6IiwiZW1haWwiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MDU4NjY2MSwiZXhwIjoxNzgwNTkzODYxfQ.0uXsjH6vJ9WNPcDnfkhHrxGbq4lHhGax39zscoUtkV0";
+
+        const socket = io("http://localhost:3000", {
+            auth: {
+                token,
+            },
+        });
+
+        socket.on("connect", () => {
+            console.log("Conectado al socket:", socket.id);
+
+            socket.emit("package:join", { packageId: 1 }, (response) => {
+                console.log(response);
+            });
+        });
+
+        socket.on("package:locationUpdated", (data) => {
+            console.log("Nueva ubicación:", data);
+        });
+
+        socket.on("package:messageCreated", (data) => {
+            console.log("Nuevo mensaje:", data);
+        });
+
+        socket.on("package:statusUpdated", (data) => {
+            console.log("Estado actualizado:", data);
+        });
+
+        socket.on("package:delivered", (data) => {
+            console.log("Paquete recibido:", data);
+        });
+
+        socket.on("connect_error", (error) => {
+            console.error("Error de conexión:", error.message);
+        });
+    </script>
+</body>
+</html>
